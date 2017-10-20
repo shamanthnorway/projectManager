@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Login/SignUp page</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <div row>
+        <div class="col-md-8 col-md-offset-2 ">
+          <ul class="nav nav-tabs">
+              <li class="active"><a data-toggle="tab" href="#login">Login</a></li>
+              <li><a data-toggle="tab" href="#signup">Sign Up</a></li>
+          </ul>
+          <div class="tab-content">
+            <div id="login" class="tab-pane fade in active">
+                <br>
+                <form class="form-horizontal" >
+                  <div class="form-group">
+                    <label class="control-label col-sm-2" for="email">Email:</label>
+                    <div class="col-sm-6">
+                      <input type="email" class="form-control" id="email" placeholder="Enter email" name="email">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label col-sm-2" for="pwd">Password:</label>
+                    <div class="col-sm-6">          
+                      <input type="password" class="form-control" id="pwd" placeholder="Enter password" name="pwd">
+                    </div>
+                  </div>
+                  <div class="form-group">        
+                    <div class="col-sm-offset-2 col-sm-6">
+                      <div class="checkbox">
+                        <label><input type="checkbox" name="remember"> Remember me</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group">        
+                    <div class="col-sm-offset-2 col-sm-6">
+                      <button type="submit" class="btn btn-default">Submit</button>
+                    </div>
+                  </div>
+                </form>
+                <div class="social-login">
+                <p>- - - - - - - - - - - - - Sign In With - - - - - - - - - - - - - </p>
+                <ul>
+                    <li><a href=""><i class="fa fa-facebook"></i> Facebook</a></li>
+                    <li><a href=""><i class="fa fa-google-plus"></i> Google+</a></li>
+                    <li><a href=""><i class="fa fa-twitter"></i> Twitter</a></li>
+                </ul>
+                </div>
+            </div>
+            <div id="signup" class="tab-pane fade">
+                <br>
+                <form class="form-horizontal" >
+                  <div class="form-group">
+                    <label class="control-label col-sm-2" for="email">Email:</label>
+                    <div class="col-sm-6">
+                      <input type="email" class="form-control" id="email" placeholder="Enter email" name="email">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label col-sm-2" for="pwd">Password:</label>
+                    <div class="col-sm-6">          
+                      <input type="password" class="form-control" id="pwd" placeholder="Enter password" name="pwd">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label col-sm-2" for="pwd">Confirm Password:</label>
+                    <div class="col-sm-6">          
+                      <input type="password" class="form-control" id="pwd" placeholder="Re-enter password" name="pwd">
+                    </div>
+                  </div>
+                  <div class="form-group">        
+                    <div class="col-sm-offset-2 col-sm-6">
+                      <div class="checkbox">
+                        <label><input type="checkbox" name="remember"> Remember me</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group">        
+                    <div class="col-sm-offset-2 col-sm-6">
+                      <button type="submit" class="btn btn-default">Submit</button>
+                    </div>
+                  </div>
+                </form>
+                <div class="social-login">
+                <p>- - - - - - - - - - - - - Sign In With - - - - - - - - - - - - - </p>
+                <ul>
+                    <li><a href=""><i class="fa fa-facebook"></i> Facebook</a></li>
+                    <li><a href=""><i class="fa fa-google-plus"></i> Google+</a></li>
+                    <li><a href=""><i class="fa fa-twitter"></i> Twitter</a></li>
+                </ul>
+                </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </body>
+</html> 
