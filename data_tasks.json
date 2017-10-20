@@ -1,0 +1,1 @@
+{"_id":{"$oid":"59e26cad1f58691dc0b8592a"},"updatedAt":{"$date":"2017-10-14T19:59:41.337Z"},"createdAt":{"$date":"2017-10-14T19:59:41.337Z"},"description":"task1 is for testing purpose","createdBy":{"$oid":"59e1d858e1698c37b4aaa0f0"},"status":"Not Started","users":[{"$oid":"59e1d858e1698c37b4aaa0f0"}],"__v":0}
