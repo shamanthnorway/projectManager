@@ -66,34 +66,6 @@ userRouter.route('/')
         res.json(resp);
     });
 });
-
-userRouter.get('/login', function(req, res){
-    res.end(`login failed`);
-});
-
-userRouter.post('/signup', function(req, res){
-    req.body.password = bcrypt.hashSync(req.body.password,bcrypt.genSaltSync(8));
-    Users.create(req.body, function (err, user) {
-        if (err) throw err;
-        console.log('user created!');
-        var id = user._id;
-		res.writeHead(200,{'Content-Type':'text/plain'});
-        res.end('New User create with id: ' + id + '\nClick here to login http://localhost:3000/users/local-login');
-    });
-});
-
-userRouter.post(
-    '/login', 
-    passport.authenticate('local', { failureRedirect: '/login' }), 
-    function(req, res){
-        // console.log(req.session, req.sessionOptions);
-        if(!req.session.userID) {
-            req.session.userID = req.body._id;   
-        }
-        req.sessionOptions.maxAge = 1000*60*10;
-        var session = JSON.stringify(req.session).concat(JSON.stringify(req.sessionOptions));
-        res.end(`cookie is set to ${session}`);
-});
 //
 userRouter.route('/:userId')
 .get(function (req, res, next) {

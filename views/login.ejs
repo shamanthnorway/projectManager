@@ -13,23 +13,23 @@
       <div row>
         <div class="col-md-8 col-md-offset-2 ">
           <ul class="nav nav-tabs">
-              <li class="active"><a className="nav-link active" data-toggle="tab" href="#login">Login</a></li>
+              <li class="active"><a data-toggle="tab" href="#login">Login</a></li>
               <li><a data-toggle="tab" href="#signup">Sign Up</a></li>
           </ul>
           <div class="tab-content">
             <div id="login" class="tab-pane fade in active">
                 <br>
-                <form class="form-horizontal" >
+                <form class="form-horizontal" action="http://localhost:3000/login" method="post">
                   <div class="form-group">
-                    <label class="control-label col-sm-2" for="email">Email:</label>
+                    <label class="control-label col-sm-2" for="username">Email:</label>
                     <div class="col-sm-6">
-                      <input type="email" class="form-control" id="email" placeholder="Enter email" name="email">
+                      <input class="form-control" id="username" placeholder="Enter username" name="username">
                     </div>
                   </div>
                   <div class="form-group">
-                    <label class="control-label col-sm-2" for="pwd">Password:</label>
+                    <label class="control-label col-sm-2" for="password">Password:</label>
                     <div class="col-sm-6">          
-                      <input type="password" class="form-control" id="pwd" placeholder="Enter password" name="pwd">
+                      <input type="password" class="form-control" id="password" placeholder="Enter password" name="password">
                     </div>
                   </div>
                   <div class="form-group">        
@@ -56,23 +56,35 @@
             </div>
             <div id="signup" class="tab-pane fade">
                 <br>
-                <form class="form-horizontal" >
+                <form class="form-horizontal" action="http://localhost:3000/signup" method="post">
                   <div class="form-group">
-                    <label class="control-label col-sm-2" for="email">Email:</label>
+                    <label class="control-label col-sm-2" for="username">Email:</label>
                     <div class="col-sm-6">
-                      <input type="email" class="form-control" id="email" placeholder="Enter email" name="email">
+                      <input class="form-control" id="username" placeholder="Enter username" name="username">
                     </div>
                   </div>
                   <div class="form-group">
-                    <label class="control-label col-sm-2" for="pwd">Password:</label>
+                    <label class="control-label col-sm-2" for="firstName">First Name:</label>
                     <div class="col-sm-6">          
-                      <input type="password" class="form-control" id="pwd" placeholder="Enter password" name="pwd">
+                      <input type="firstName" class="form-control" id="firstName" placeholder="Enter first name" name="firstName">
                     </div>
                   </div>
                   <div class="form-group">
-                    <label class="control-label col-sm-2" for="pwd">Confirm Password:</label>
+                    <label class="control-label col-sm-2" for="lastName">Last Name:</label>
                     <div class="col-sm-6">          
-                      <input type="password" class="form-control" id="pwd" placeholder="Re-enter password" name="pwd">
+                      <input type="lastName" class="form-control" id="lastName" placeholder="Enter last name" name="lastName">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label col-sm-2" for="password">Password:</label>
+                    <div class="col-sm-6">          
+                      <input type="password" class="form-control" id="password" placeholder="Enter password" name="password">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label col-sm-2" for="emailAddress">emailAddress:</label>
+                    <div class="col-sm-6">          
+                      <input type="emailAddress" class="form-control" id="emailAddress" placeholder="Enter email address" name="emailAddress">
                     </div>
                   </div>
                   <div class="form-group">        
@@ -98,6 +110,7 @@
                 </div>
             </div>
           </div>
+
         </div>
       </div>
     </div>

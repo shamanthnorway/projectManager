@@ -12,9 +12,26 @@ var teams = require('./routes/teams');
 var tasks = require('./routes/tasks');
 var wikis = require('./routes/wikis');
 var users = require('./routes/users');
+var login = require('./routes/login');
 var tickets = require('./routes/tickets');
 
 var app = express();
+// var port = 8080;
+// var hostname = 'localhost';
+app.set('port', process.env.PORT || 3001);
+console.log(`App is listen at http://localhost:3001/`);
+
+app.use(function(req, res, next) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS,POST,PUT,DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers');
+ 
+ //and remove cacheing so we get the most recent comments
+  res.setHeader('Cache-Control', 'no-cache');
+  next();
+ });
+
 var mongoose = require('mongoose'),
 assert = require('assert');
 var url = 'mongodb://localhost:27017/projectManager';
@@ -46,11 +63,12 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // app.use('/', index);
-app.use('/', users);
-app.use('/users', teams);
-app.use('/users/:teamID/tasks', tasks);
-app.use('/users/:teamID/tickets', tickets);
-app.use('/users/:teamID/wikis', wikis);
+app.use('/', login);
+app.use('/teams', teams);
+app.use('/users', users);
+app.use('/tasks', tasks);
+app.use('/tickets', tickets);
+app.use('/wikis', wikis);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -69,9 +87,5 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
-var port = 3000;
-var hostname = 'localhost';
-app.listen(port, hostname, function(){
-	console.log(`Server running at http://${hostname}:${port}/`);
-})
+app.listen(app.get('port'));
 module.exports = app;

@@ -28,9 +28,7 @@ passport.use(new Strategy(
         console.log("User authentication failed!");
         console.log(password+"User authentication failed!"+user.password+" status: "+bcrypt.compareSync(password,user.password));
         return cb(null, false);
-      }
-      // if (user.password != password) { console.log(`The user is ${user} and password is ${password}`);return cb(null, false); }
-      // console.log(`The user is`, user);
+      };
       return cb(null, user);
     });
 }));

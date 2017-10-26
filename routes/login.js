@@ -3,70 +3,67 @@ var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var Users = require('./../models/users');
 var Teams = require('./../models/teams');
-var userRouter = express.Router();
-userRouter.use(bodyParser.json());
+var cookieSession = require('cookie-session');
+var passport = require('./../authenticate/init');
+var bcrypt=require('bcrypt');
+var loginRouter = express.Router();
+loginRouter.use(bodyParser.json());
 
-dummyUser = {
-  username: 'user1',
-  firstName:'user1_fn',
-  lastName: 'user1_ln',
-  emailAddress: 'user1@gmail.com',
-  team: []
-}
+const sampleUser = {
+	"username" : "user13",
+    "password" : "user13",
+    "firstName" : "user13_fn",
+    "lastName" : "user13_ln",
+    "emailAddress" : "user14@gmail.com",
+    "team" : ["59e26b9e7f0a59348cf67421" ]
+};
+loginRouter.get('/',function(req, res){
+    res.render('./../views/login');
+});
 
-sampleUser = mongoose.Types.ObjectId('59e26b707f0a59348cf6742d');
-
-userRouter.route('/')
-.get(function (req, res, next) {
-    Users.findById(sampleUser, function (err, user) {
-        if (err) throw err;
-        var ids = user.team;
-        var size = ids.length;
-        var count = 0;
-        var teams = [];
-        var finalJSON = JSON.parse(JSON.stringify(user));
-        ids.forEach(function(id){
-            Teams.findById(id, function(err, team){
-                count++;
-                if(err) throw err;
-                teams.push({"_id":team._id, "name":team.teamName});
-                if(count == size) {
-                    finalJSON.team = teams;
-                    res.json(finalJSON);
-                }
-            });
-        });
-    });
-})
-
-.post(function (req, res, next) {
+loginRouter.post('/signup', function(req, res){
+    req.body.password = bcrypt.hashSync(req.body.password,bcrypt.genSaltSync(8));
     Users.create(req.body, function (err, user) {
         if (err) {
-            res.writeHead(400,{'Content-Type':'text/plain'});
-            res.end('Duplicate found');
+            const response = {
+                status:'failed',
+                message: 'Error from MongoDB',
+                errorMessage: err,
+                user: ''
+            }
+            res.status(200).json(response);
+        } else {            
+            // console.log('user created!');
+            const response = {
+                status:'success',
+                message: 'User was successfully created',
+                errorMessage: '',
+                user: user
+            }
+            // res.writeHead(200,{'Content-Type':'text/plain'});
+            res.status(200).json(response);
         }
-        else {
-            console.log('Dish created!');
-            var id = user._id;
-            res.writeHead(200,{'Content-Type':'text/plain'});
-            res.end('Added the team with id: ' + id);
-        }
-    });
-})
-
-.delete(function (req, res, next) {
-    Users.remove({}, function (err, resp) {
-        if (err) throw err;
-        res.json(resp);
+        // res.end('New User create with id: ' + id + '\nClick here to login http://localhost:3000/users/local-login');
     });
 });
 
-//
-userRouter.route('/:userId')
-.get(function (req, res, next) {
-    Users.findById(req.params.userId, function (err, user) {
-        if (err) throw err;
-        res.json(user);
-    });
-})
-module.exports = userRouter;
+loginRouter.post('/loginFailed', function(req, res){
+    res.status(302).send('login failed');
+});
+
+loginRouter.post(
+    '/login', 
+    passport.authenticate('local', { failureRedirect: '/loginFailed' }), 
+    function(req, res){
+        // console.log(req.url);
+        // console.log(req.body);
+        // console.log(req.session, req.sessionOptions);
+        if(!req.session.userID) {
+            req.session.userID = req.body._id;   
+        }
+        req.sessionOptions.maxAge = 1000*60*10;
+        var session = JSON.stringify(req.session).concat(JSON.stringify(req.sessionOptions));
+        // res.end(`cookie is set to ${session}`);
+        res.status(200).send('login successful');
+});
+module.exports = loginRouter;

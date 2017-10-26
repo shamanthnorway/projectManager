@@ -14,9 +14,9 @@ var dummyTeam = {
 const sampleUser = mongoose.Types.ObjectId("59e26b707f0a59348cf6742d");
 teamRouter.route('/')
 .get(function (req, res, next) {
-    
+    // console.log('cookie:', req.session.passport.user._id, req.sessionOptions);
     var teams = [];
-    Users.findById(sampleUser, function (err, user) {
+    Users.findById(mongoose.Types.ObjectId(req.session.passport.user._id), function (err, user) {
         if (err) throw err;
         var ids = user.team;
         var size = ids.length;
@@ -62,10 +62,10 @@ teamRouter.route('/')
 //
 teamRouter.route('/:teamId')
 .get(function (req, res, next) {
-    if(!req.session.userID) {
+    if(!req.session.passport.user._id) {
         res.redirect('/');
     } else {
-        Users.findById(mongoose.Types.ObjectId(req.session.userID), function(err, user){
+        Users.findById(mongoose.Types.ObjectId(req.session.passport.user._id), function(err, user){
             if(err) throw err;
             for(var i = 0; i < user.team.length; i++) {
                 if(user.team[i] === req.params.teamId) {
