@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { login, signup } from '../actions';
+import { login, signup, setUser } from '../actions';
 
 class Login extends Component {
     renderFieldText(field) {
@@ -33,9 +33,14 @@ class Login extends Component {
     }
 
     onLoginSubmit(values) {
-        console.log(values);
+        // console.log(values);
         this.props.login(values, (response) => {
             console.log(response);
+            if(response.data.status === 'success') {
+                this.props.setUser(response.data.user);
+                // console.log('after set user: ', this.props.user );
+                this.props.history.push('/teams');
+            }
         })
     }
 
@@ -110,8 +115,12 @@ class Login extends Component {
     }
 }
 
+function mapStateToProps({ user }) {
+    return{ user }
+}
+
 export default reduxForm({
     form:'PostsNewForm'
 })(
-    connect(null, { login, signup })(Login)
+    connect(mapStateToProps, { login, signup, setUser })(Login)
 );

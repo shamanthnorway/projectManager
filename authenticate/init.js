@@ -21,9 +21,8 @@ passport.use(new Strategy(
   function(username, password, cb) {
     // console.log('Inside passport function', username, passport);
     Users.findOne({"username":username}, function(err, user){
-      if (err) { console.log(`Err`);return cb(err); }
-      if (!user) { console.log(`The user not found`);return cb(null, false); }
-      console.log(user);
+      if (err) { return cb(err); }
+      if (!user) { return cb(null, false); }
       if(!bcrypt.compareSync(password,user.password)) {
         console.log("User authentication failed!");
         console.log(password+"User authentication failed!"+user.password+" status: "+bcrypt.compareSync(password,user.password));

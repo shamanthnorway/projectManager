@@ -21,6 +21,30 @@ loginRouter.get('/',function(req, res){
     res.render('./../views/login');
 });
 
+loginRouter.get('/:userID', function(req, res){
+    var teams = [];
+    Users.findById(mongoose.Types.ObjectId(req.params.userID), function (err, user) {
+        if (err) throw err;
+        var ids = user.team;
+        var size = ids.length;
+        var count = 0;
+        ids.forEach(function(id) {
+            Teams.findById(id, function(err, team){
+                count++;
+                if(err) throw err;
+                if(team) {
+                    teams.push(team);
+                }
+                if(count == size) {
+                    res.json(teams);}
+            });
+        });
+    });
+    function sendResponse() {
+        res.json(teams);
+    }
+});
+
 loginRouter.post('/signup', function(req, res){
     req.body.password = bcrypt.hashSync(req.body.password,bcrypt.genSaltSync(8));
     Users.create(req.body, function (err, user) {
@@ -31,7 +55,7 @@ loginRouter.post('/signup', function(req, res){
                 errorMessage: err,
                 user: ''
             }
-            res.status(200).json(response);
+            res.status(400).json(response);
         } else {            
             // console.log('user created!');
             const response = {
@@ -41,7 +65,7 @@ loginRouter.post('/signup', function(req, res){
                 user: user
             }
             // res.writeHead(200,{'Content-Type':'text/plain'});
-            res.status(200).json(response);
+            res.status(202).json(response);
         }
         // res.end('New User create with id: ' + id + '\nClick here to login http://localhost:3000/users/local-login');
     });
@@ -55,8 +79,7 @@ loginRouter.post(
     '/login', 
     passport.authenticate('local', { failureRedirect: '/loginFailed' }), 
     function(req, res){
-        // console.log(req.url);
-        // console.log(req.body);
+        // console.log(req.user);
         // console.log(req.session, req.sessionOptions);
         if(!req.session.userID) {
             req.session.userID = req.body._id;   
@@ -64,6 +87,13 @@ loginRouter.post(
         req.sessionOptions.maxAge = 1000*60*10;
         var session = JSON.stringify(req.session).concat(JSON.stringify(req.sessionOptions));
         // res.end(`cookie is set to ${session}`);
-        res.status(200).send('login successful');
+        const response = {
+            status:'success',
+            message: 'User was successfully authenticated',
+            errorMessage: '',
+            user: req.user
+        }
+        // res.writeHead(200,{'Content-Type':'text/plain'});
+        res.status(202).json(response);
 });
 module.exports = loginRouter;

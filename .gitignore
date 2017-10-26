@@ -3,6 +3,7 @@
 # dependencies
 /node_modules
 /React/project-manager/node_modules
+APIref.xlsx
 
 #data
 /data

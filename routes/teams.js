@@ -23,18 +23,19 @@ teamRouter.route('/')
         var count = 0;
         ids.forEach(function(id) {
             Teams.findById(id, function(err, team){
+                console.log(count);
                 count++;
                 if(err) throw err;
                 if(team) {
                     teams.push(team);
                 }
-                if(count == size) sendResponse();
+                if(count == size) {
+                    console.log(teams);
+                    res.json(teams);
+                }
             });
         });
     });
-    function sendResponse() {
-        res.json(teams);
-    }
 })
 
 .post(function (req, res, next) {
@@ -62,25 +63,35 @@ teamRouter.route('/')
 //
 teamRouter.route('/:teamId')
 .get(function (req, res, next) {
-    if(!req.session.passport.user._id) {
-        res.redirect('/');
-    } else {
-        Users.findById(mongoose.Types.ObjectId(req.session.passport.user._id), function(err, user){
-            if(err) throw err;
-            for(var i = 0; i < user.team.length; i++) {
-                if(user.team[i] === req.params.teamId) {
-                    Teams.findById(req.params.teamId, function (err, team) {
-                        if (err) throw err;
-                        if(!req.session.teamID) {
-                            req.session.teamID = req.params.teamId;
-                        }
-                        res.json(team);
-                    });
-                }
-            }
-            res.end(`User is not associated with the team: ${req.params.teamId}`);
-        })
+    Teams.findById(req.params.teamId, function (err, team) {
+        if (err) throw err;
+        if(!req.session.teamID) {
+            req.session.teamID = req.params.teamId;
+        }
+        // console.log(team);
+        res.json(team);
+    });
+
+
+    // if(!req.session.passport.user._id) {
+    //     res.redirect('/');
+    // } else {
+    //     Users.findById(mongoose.Types.ObjectId(req.session.passport.user._id), function(err, user){
+    //         if(err) throw err;
+    //         for(var i = 0; i < user.team.length; i++) {
+    //             if(user.team[i] === req.params.teamId) {
+    //                 Teams.findById(req.params.teamId, function (err, team) {
+    //                     if (err) throw err;
+    //                     if(!req.session.teamID) {
+    //                         req.session.teamID = req.params.teamId;
+    //                     }
+    //                     res.json(team);
+    //                 });
+    //             }
+    //         }
+    //         res.end(`User is not associated with the team: ${req.params.teamId}`);
+    //     })
         
-    }    
+    // }    
 })
 module.exports = teamRouter;
