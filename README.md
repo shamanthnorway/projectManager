@@ -9,4 +9,6 @@ The following have been completed:
  	- login
  	- view all the teams they are part of
  	- select a team
- 	- view all the tasks, tickets, wikis and all the users of that team 
+ 	- view all the tasks, tickets, wikis and all the users of that team
+ 	- create new task
+ 	- view individual tasks 
