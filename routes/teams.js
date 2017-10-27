@@ -4,6 +4,9 @@ var bodyParser = require('body-parser');
 var cookieSession = require('cookie-session');
 var Teams = require('./../models/teams');
 var Users = require('./../models/users');
+var Tasks = require('./../models/tasks');
+var Tickets = require('./../models/tickets');
+var Wikis = require('./../models/wikis');
 var teamRouter = express.Router();
 teamRouter.use(bodyParser.json());
 
@@ -68,8 +71,46 @@ teamRouter.route('/:teamId')
         if(!req.session.teamID) {
             req.session.teamID = req.params.teamId;
         }
-        // console.log(team);
-        res.json(team);
+        // console.log('testing: ',mongoose.Types.ObjectId("59e26b707f0a59348cf6742d"))
+        var objUser = team.users.map(function(user){ 
+            return mongoose.Types.ObjectId(user);
+        });
+        objUser.push(mongoose.Types.ObjectId(team.createdBy));
+
+        // console.log(objUser);
+
+        Users.find({"_id":{$in:objUser}}, function(err, usersList){
+            Tasks.find({"_id":{$in: team.tasks}}, function(err, tasksList) {
+                Tickets.find({"_id":{$in: team.tickets}}, function(err, ticketsList){
+                    Wikis.find({"_id":{$in: team.wikis}}, function(err, wikisList){
+                        var finalJSON = JSON.parse(JSON.stringify(team));
+                        if(usersList) {                            
+                            finalJSON["users"] = [];
+                            usersList.forEach(function(user){
+                                if(user._id == team.createdBy) {
+                                    finalJSON["createdBy"] = user;
+                                } 
+                                finalJSON["users"].push(user);
+                                
+                            });
+                        }
+                        if(tasksList) {
+                            finalJSON["tasks"] = tasksList;
+                        }
+                        if(ticketsList) {
+                            finalJSON["tickets"] = ticketsList;
+                        }
+                        if(wikisList) {
+                            finalJSON["wikis"] = wikisList;
+                        }
+                        // console.log(finalJSON);
+                        res.json(finalJSON);
+                    });
+                });
+            });
+        });
+
+        
     });
 
 

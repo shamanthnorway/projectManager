@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { fetchTeam } from '../actions';
+import NavigationBar from './navigation';
 
 class Team extends Component {
     componentDidMount() {
@@ -15,7 +16,15 @@ class Team extends Component {
             const { user } = this.props.user;
             const { team } = this.props.user;
             return (
-                <div>Welcome {user.username} to {team.teamName}</div>
+                <div  className="container">
+                    <div className="jumbotron"><h1>{team.teamName}</h1></div>
+                    <div className="col-sm-2">
+                        <NavigationBar />
+                    </div>
+                    <div className="col-sm-10">
+
+                    </div>
+                </div>
             );
         }        
     }

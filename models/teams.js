@@ -5,7 +5,6 @@ var ObjectId = Schema.ObjectId;
 var teamSchema = new Schema({
     teamName: {
         type: String,
-        unique: true,
         required: true
     },
     createdBy: String,

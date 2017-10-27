@@ -8,6 +8,10 @@ import promise from 'redux-promise';
 import App from './components/app';
 import Login from './components/login';
 import Teams from './components/teams';
+import Tasks from './components/tasks';
+import Tickets from './components/tickets';
+import Wikis from './components/wikis';
+import Users from './components/users';
 import Team from './components/team';
 import reducers from './reducers';
 
@@ -18,6 +22,10 @@ ReactDOM.render(
     <BrowserRouter>
       <div>
         <Switch>
+          <Route path="/teams/:teamID/tasks" component={Tasks} />
+          <Route path="/teams/:teamID/tickets" component={Tickets} />
+          <Route path="/teams/:teamID/wikis" component={Wikis} />
+          <Route path="/teams/:teamID/users" component={Users} />
           <Route path="/teams/:teamID" component={Team} />
           <Route path="/teams" component={Teams} />
           <Route path="/" component={Login} />
