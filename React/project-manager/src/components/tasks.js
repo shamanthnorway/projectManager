@@ -5,7 +5,12 @@ import NavigationBar from './navigation';
 
 class Tasks extends Component {
     renderTasksList() {
+        const month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Spt', 'Oct','Nov', 'Dec'];
         return this.props.user.team.tasks.map((task)=> {
+            var d = new Date(task.createdAt);
+            var createdOn = `${d.getDate()} ${month[d.getMonth()]}, ${d.getFullYear()}`;
+            d = new Date(task.updatedAt);
+            var updatedOn = `${d.getDate()} ${month[d.getMonth()]}, ${d.getFullYear()}`;
             return (
                 <tr key={task._id}>
                     <td>
@@ -14,8 +19,8 @@ class Tasks extends Component {
                         </Link>
                     </td>
                     <td>Users</td>
-                    <td>{task.createdAt}</td>
-                    <td>{task.updatedAt}</td>
+                    <td>{createdOn}</td>
+                    <td>{updatedOn}</td>
                     <td>
                         <div className="progress">
                             <div 
@@ -36,6 +41,7 @@ class Tasks extends Component {
         if(!this.props.user.user) return <div>Please login</div>;
         if(!this.props.user.team) return <div>Loading Team</div>;
         else {
+            // console.log(this.props);
             const { team } = this.props.user;
             return (
                 <div  className="container">
@@ -47,8 +53,9 @@ class Tasks extends Component {
                     </div>
                     <div className="col-sm-10">
                         <div className="btn-group">
-                            <button type="button" className="btn btn-default">Add Task</button>
-                            <button type="button" className="btn btn-default">Delete Task</button>
+                            <Link to={`/teams/${team._id}/tasks/newTask`} >
+                                <button type="button" className="btn btn-default">Add Task</button>
+                            </Link>
                         </div> 
                         <table className="table">
                             <thead>

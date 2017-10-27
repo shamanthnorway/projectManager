@@ -9,6 +9,8 @@ import App from './components/app';
 import Login from './components/login';
 import Teams from './components/teams';
 import Tasks from './components/tasks';
+import newTask from './components/tasks/newtask';
+import Task from './components/tasks/task';
 import Tickets from './components/tickets';
 import Wikis from './components/wikis';
 import Users from './components/users';
@@ -22,6 +24,8 @@ ReactDOM.render(
     <BrowserRouter>
       <div>
         <Switch>
+          <Route path="/teams/:teamID/tasks/newTask" component={newTask} />
+          <Route path="/teams/:teamID/tasks/:taskID" component={Task} />
           <Route path="/teams/:teamID/tasks" component={Tasks} />
           <Route path="/teams/:teamID/tickets" component={Tickets} />
           <Route path="/teams/:teamID/wikis" component={Wikis} />

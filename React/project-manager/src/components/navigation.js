@@ -8,7 +8,7 @@ class NavigationBar extends Component {
         if(!this.props.user.team) return <div>Loading Team</div>;
         else {
             const { team } = this.props.user;
-            console.log('Inside Navigation: ',team);
+            // console.log('Inside Navigation: ',team);
             return (
                 <ul className="list-group">
                     <li className="list-group-item">

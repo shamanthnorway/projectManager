@@ -60,9 +60,9 @@ taskRouter.route('/')
     console.log(req.body);
     Tasks.create(req.body, function (err, task) {
         if (err) {
-            throw err;
-            // res.writeHead(400,{'Content-Type':'text/plain'});
-            // res.end('Duplicate found');
+            // throw err;
+            res.writeHead(400,{'Content-Type':'text/plain'});
+            res.end('Duplicate found');
         }
         else {
             console.log('Dish created!');

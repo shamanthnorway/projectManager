@@ -12,6 +12,17 @@ var taskSchema = new Schema({
     users:[{
         type: ObjectId,
         ref: 'User'
+    }],
+    updates:[{
+        timestamps: { 
+            type : Date, 
+            default: Date.now 
+        },
+        updatedBy: {
+            type: ObjectId,
+            ref: 'User'
+        },
+        updateDescription: String
     }]
 }, {
     timestamps: true

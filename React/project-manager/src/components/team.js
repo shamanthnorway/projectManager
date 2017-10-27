@@ -22,7 +22,52 @@ class Team extends Component {
                         <NavigationBar />
                     </div>
                     <div className="col-sm-10">
-
+                        <table className="table">
+                            <thead>
+                                <tr>
+                                    <th>Views</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th>
+                                        <Link to={`/teams/${team._id}/tickets`} >
+                                            Tickets
+                                        </Link>
+                                    </th>
+                                    <th>View all the tickets</th>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        <Link to={`/teams/${team._id}/wikis`} >
+                                            Wikis
+                                        </Link>
+                                    </th>
+                                    <th>
+                                    View all the Wikis
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        <Link to={`/teams/${team._id}/users`} >
+                                            Manager User
+                                        </Link>
+                                    </th>
+                                    <th>
+                                    Manager Users
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        <Link to={`/teams`} >
+                                            Teams List
+                                        </Link>
+                                    </th>
+                                    <th>Go back to view all your teams</th>
+                                </tr>
+                            </tbody>
+                        </table>  
                     </div>
                 </div>
             );
