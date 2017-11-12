@@ -11,4 +11,7 @@ The following have been completed:
  	- select a team
  	- view all the tasks, tickets, wikis and all the users of that team
  	- create new task
- 	- view individual tasks 
+ 	- view individual task
+ 	- view individual ticket
+ 	- view individual wiki
+ 	- view individual user 
