@@ -16,6 +16,20 @@ The following have been completed:
  	- view individual wiki
  	- view individual user 
 
+ ### Installing Node Modules
+
+To install Node.js dependencies
+```
+cd ./projectManager
+npm install
+```
+
+To install React.js dependencies
+```
+cd ./projectManager/React/project-manager
+npm install
+```
+
  ### Starting Node.js
 
  To start Node, type `npm start`
