@@ -38,7 +38,7 @@ npm install
 
  To start Node, type `npm start`
 
- The web application will be available on (http://localhost:8080)
+ The web application will be available on http://localhost:8080
 
  For testing purpose, use the following credentials:
 
