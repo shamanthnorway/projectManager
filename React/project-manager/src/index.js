@@ -12,8 +12,11 @@ import Tasks from './components/tasks';
 import newTask from './components/tasks/newtask';
 import Task from './components/tasks/task';
 import Tickets from './components/tickets';
+import Ticket from './components/tickets/ticket';
 import Wikis from './components/wikis';
+import Wiki from './components/wikis/wiki';
 import Users from './components/users';
+import User from './components/users/user';
 import Team from './components/team';
 import reducers from './reducers';
 
@@ -27,8 +30,11 @@ ReactDOM.render(
           <Route path="/teams/:teamID/tasks/newTask" component={newTask} />
           <Route path="/teams/:teamID/tasks/:taskID" component={Task} />
           <Route path="/teams/:teamID/tasks" component={Tasks} />
+          <Route path="/teams/:teamID/tickets/:ticketID" component={Ticket} />
           <Route path="/teams/:teamID/tickets" component={Tickets} />
+          <Route path="/teams/:teamID/wikis/:wikiID" component={Wiki} />
           <Route path="/teams/:teamID/wikis" component={Wikis} />
+          <Route path="/teams/:teamID/users/:userID" component={User} />
           <Route path="/teams/:teamID/users" component={Users} />
           <Route path="/teams/:teamID" component={Team} />
           <Route path="/teams" component={Teams} />

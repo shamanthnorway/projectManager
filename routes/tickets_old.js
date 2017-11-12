@@ -7,7 +7,6 @@ var Teams = require('./../models/teams');
 var Users = require('./../models/users');
 var ticketRouter = express.Router();
 ticketRouter.use(bodyParser.json());
-
 const sampleTeam = mongoose.Types.ObjectId("59e26b9e7f0a59348cf67421");
 var dummyTicket = {
     description: 'This is a test. Check if there is an issue',
@@ -29,15 +28,22 @@ ticketRouter.route('/')
             Tickets.findById(mongoose.Types.ObjectId(ticketId), function(err, ticket){
                 if (err) throw err;
                 ticketCount++;
-                resultTickets.push(ticket);
-                if(ticketCount == ticketSize) res.json({
-                    "teamId": ticket.teamId,
-                    "title": ticket.title,
-                    "createBy": ticket.createBy,
-                    "resolvedBy": ticket.resolvedBy,
-                    "status": ticket.status,
-                    "checkedBy": ticket.checkedBy,
-                    "serverity": ticket.serverity
+                var finalTickets = JSON.parse(JSON.stringify(ticket));
+                var users = [ticket.createBy, ticket.resolvedBy, ticket.checkedBy];
+                Users.find({"_id":{$in: users}}, function(err, res_users){                    
+                    for(var i = 0; i < res_users.length; i++) {
+                        if(res_users[i]._id.toString() === ticket.createBy.toString()) {
+                            finalTickets.createBy = res_users[i];
+                        }
+                        else if(res_users[i]._id._id.toString() == ticket.checkedBy._id.toString()) {
+                            finalTickets.checkedBy = res_users[i];
+                        }
+                        else if(res_users[i]._id._id.toString() == ticket.resolvedBy._id.toString()) {
+                            finalTickets.resolvedBy = res_users[i];
+                        }
+                    }
+                    resultTickets.push(finalTickets);
+                    if(ticketCount == ticketSize) res.json(resultTickets);
                 });
             });
         });
@@ -71,7 +77,32 @@ ticketRouter.route('/:ticketId')
 .get(function (req, res, next) {
     Tickets.findById(mongoose.Types.ObjectId(req.params.ticketId), function(err, ticket){
         if (err) throw err;
-        res.json(ticket);
+        var resultTickets = JSON.parse(JSON.stringify(ticket));
+        var users = [ticket.createBy, ticket.resolvedBy, ticket.checkedBy];
+        var updates = {};
+        
+        ticket.updates.forEach(function(update){
+            users.push(update.updatedBy);
+            updates[update.updatedBy] = update;
+        });
+        Users.find({"_id":{$in: users}}, function(err, res_users){
+            for(var i = 0; i < res_users.length; i++) {
+                if(res_users[i]._id.toString() === ticket.createBy.toString()) {
+                    resultTickets.createBy = res_users[i];
+                }
+                if(ticket.checkedBy && res_users[i]._id.toString() === ticket.checkedBy.toString()) {
+                    resultTickets.checkedBy = res_users[i];
+                }
+                if(ticket.resolvedBy && res_users[i]._id.toString() === ticket.resolvedBy.toString()) {
+                    resultTickets.resolvedBy = res_users[i];
+                }
+                if(updates[res_users[i]._id.toString()]) {                    
+                    updates[res_users[i]._id].updatedBy = res_users[i];
+                }
+            }
+            resultTickets.updates = updates;
+            res.json(resultTickets);
+        });
     });
 })
 .put(function(req, res, next){

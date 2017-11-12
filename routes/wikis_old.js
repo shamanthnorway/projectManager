@@ -24,12 +24,7 @@ wikiRouter.route('/')
             Wikis.findById(id, function (err, wiki) {
                 count++;
                 if (err) throw err;
-                wikiResult.push({
-                    "_id":wiki._id, 
-                    "title":wiki.title, 
-                    "createdBy": wiki.createdBy,
-                    "teamId":wiki.teamId
-                });
+                wikiResult.push(wiki);
                 if(count == size) res.json(wikiResult);
             });
         });
@@ -40,19 +35,14 @@ wikiRouter.route('/')
 .post(function (req, res, next) {
     Wikis.create(req.body, function (err, wiki) {
         if (err) {
-            const response = {
-                status:'failed',
-                message: 'Error from MongoDB',
-                errorMessage: err,
-                user: ''
-            }
-            res.status(400).json(response);
+            res.writeHead(400,{'Content-Type':'text/plain'});
+            res.end('Duplicate found');
         }
         else {
-            // console.log('Wiki created!');
+            console.log('Dish created!');
             var id = wiki._id;
             res.writeHead(200,{'Content-Type':'text/plain'});
-            res.end('Added the wiki with id: ' + id);
+            res.end('Added the ticket with id: ' + id);
         }
     });
 })
@@ -76,8 +66,9 @@ wikiRouter.route('/:wikiId')
     Wikis.findByIdAndUpdate(
         req.params.wikiId, 
         {
-            "title":req.body.title, 
-            "body":req.body.body
+            "name":req.body.name, 
+            "heading":req.body.heading, 
+            "description":req.body.description
         },
         {new : true}, 
         function (err, wiki) {

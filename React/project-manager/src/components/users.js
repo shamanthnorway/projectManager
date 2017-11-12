@@ -29,10 +29,7 @@ class Users extends Component {
                         <NavigationBar />
                     </div>
                     <div className="col-sm-10">
-                        <div className="btn-group">
-                            <button type="button" className="btn btn-default">Add User</button>
-                            <button type="button" className="btn btn-default">Delete User</button>
-                        </div> 
+                        <button type="button" className="btn btn-default">Add User</button>
                         <ul className="list-group">
                             {this.renderUsersList()}
                         </ul>                   

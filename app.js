@@ -63,12 +63,12 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // app.use('/', index);
-app.use('/', login);
 app.use('/teams', teams);
 app.use('/users', users);
 app.use('/tasks', tasks);
 app.use('/tickets', tickets);
 app.use('/wikis', wikis);
+app.use('/', login);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

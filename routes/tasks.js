@@ -16,46 +16,46 @@ var dummyTask = {
     users:[mongoose.Types.ObjectId('59e26b707f0a59348cf67435'),mongoose.Types.ObjectId('59e26b707f0a59348cf67434')]
 }
 
+// taskRouter.route('/')
+// .get(function (req, res, next) {
+//     Teams.findById(sampleTeam, function(err, team){
+//         if(err) throw err;
+//         var taskIds = team.tasks;
+//         var count = 0;
+//         var size = taskIds.length;
+//         var taskResult = [];
+//         taskIds.forEach(function(id){
+//             Tasks.findById(id, function(err, task){
+//                 if(err) throw err;
+//                 count++;
+//                 Users.findById(task.createdBy, function(err, creator){
+//                     if(err) throw err;
+//                     var userIds = task.users;
+//                     var count2 = 0;
+//                     var size2 = userIds.length;
+//                     var userResult = [];
+//                     var convertedJSON = JSON.parse(JSON.stringify(task));
+//                     // console.log('creator', creator);
+//                     convertedJSON.createdBy = creator;                    
+//                     taskResult.push(convertedJSON);
+//                     userIds.forEach(function(userid){
+//                         Users.findById(userid, function(err, user){
+//                             count2++;
+//                             if(err) throw err;
+//                             userResult.push(user);
+//                             if(count2 == size2) {
+//                                 convertedJSON.users = userResult;
+//                                 // console.log('convertedJSON', convertedJSON);
+//                             }
+//                             if(count2 == size2 && count == size) res.json(taskResult);
+//                         });
+//                     });
+//                 });
+//             });
+//         });
+//     });
+// })
 taskRouter.route('/')
-.get(function (req, res, next) {
-    Teams.findById(mongoose.Types.ObjectId(req.session.teamID), function(err, team){
-        if(err) throw err;
-        var taskIds = team.tasks;
-        var count = 0;
-        var size = taskIds.length;
-        var taskResult = [];
-        taskIds.forEach(function(id){
-            Tasks.findById(id, function(err, task){
-                if(err) throw err;
-                count++;
-                Users.findById(task.createdBy, function(err, creator){
-                    if(err) throw err;
-                    var userIds = task.users;
-                    var count2 = 0;
-                    var size2 = userIds.length;
-                    var userResult = [];
-                    var convertedJSON = JSON.parse(JSON.stringify(task));
-                    // console.log('creator', creator);
-                    convertedJSON.createdBy = creator;                    
-                    taskResult.push(convertedJSON);
-                    userIds.forEach(function(userid){
-                        Users.findById(userid, function(err, user){
-                            count2++;
-                            if(err) throw err;
-                            userResult.push(user);
-                            if(count2 == size2) {
-                                convertedJSON.users = userResult;
-                                // console.log('convertedJSON', convertedJSON);
-                            }
-                            if(count2 == size2 && count == size) res.json(taskResult);
-                        });
-                    });
-                });
-            });
-        });
-    });
-})
-
 .post(function (req, res, next) {
     console.log(req.body);
     Tasks.create(req.body, function (err, task) {
@@ -65,10 +65,10 @@ taskRouter.route('/')
             res.end('Duplicate found');
         }
         else {
-            console.log('Dish created!');
+            console.log('Task created!');
             var id = task._id;
             res.writeHead(200,{'Content-Type':'text/plain'});
-            res.end('Added the team with id: ' + id);
+            res.end('Added the task with id: ' + id);
         }
     });
 })
@@ -87,42 +87,7 @@ taskRouter.route('/:taskId')
     console.log(req.body);
     Tasks.findById(mongoose.Types.ObjectId(req.params.taskId), function (err, task) {
         if (err) throw err;
-        var result = [];
-        var finalJSON = JSON.parse(JSON.stringify(task));
-        Users.findById(task.createdBy, function(err, creator){
-            if(err) throw err;
-            finalJSON.createdBy = {
-                "_id":creator._id, 
-                "username":creator.username, 
-                "firstName":creator.firstName,
-                "lastName":creator.lastName
-            };
-            var ids = task.users;
-            var size = ids.length;
-            var count = 0;
-            ids.forEach(function(id){
-                Users.findById(id, function(err, user){
-                    if(err) throw err;
-                    if(user)
-                    result.push({
-                        "_id":user._id, 
-                        "username":user.username, 
-                        "firstName":user.firstName,
-                        "lastName":user.lastName
-                    });
-                    else {
-                        result.push({"_id":id, "userNotFound":"userNotFound"});
-                    }
-                    count++;
-                    if(count === size) {
-                        finalJSON.users = result;
-                        // console.log(finalJSON);
-                        res.json(finalJSON);
-                    }                    
-                });
-            });
-        });
-        // res.json(task);
+        res.json(task);
     });
 })
 .put(function(req, res, next){

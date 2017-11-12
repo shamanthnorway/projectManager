@@ -66,28 +66,12 @@ userRouter.route('/')
         res.json(resp);
     });
 });
-// Temporary
-userRouter.route('/:userId/getUserProfile')
-.get(function (req, res, next) {
-    Users.findById(mongoose.Types.ObjectId(req.params.userId), function (err, user) {
-        if (err) throw err;
-        var finalJSON = JSON.parse(JSON.stringify(user));
-        res.json({
-            '_id':finalJSON._id,
-            'firstName': finalJSON.firstName,
-            'lastName': finalJSON.lastName,
-            'emailAddress': finalJSON.emailAddress
-        });
-    });
-});
-
+//
 userRouter.route('/:userId')
 .get(function (req, res, next) {
     Users.findById(mongoose.Types.ObjectId(req.params.userId), function (err, user) {
         if (err) throw err;
-        var finalJSON = JSON.parse(JSON.stringify(user));
-        finalJSON.passport = '';
-        res.json(finalJSON);
+        res.json(user);
     });
 });
 module.exports = userRouter;

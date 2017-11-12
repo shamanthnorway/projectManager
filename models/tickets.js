@@ -4,18 +4,23 @@ var ObjectId = Schema.ObjectId;
 
 var ticketSchema = new Schema({
     description: String,
+    teamId: String,
+    title: String,
     createBy: {
-        type: ObjectId,
-        ref: 'User'
+        userId: String,
+        firstName: String,
+        lastName: String
     },
     resolvedBy: {
-        type: ObjectId,
-        ref: 'User'
+        userId: String,
+        firstName: String,
+        lastName: String
     },
     status: String,
     checkedBy: {
-        type: ObjectId,
-        ref: 'User'
+        userId: String,
+        firstName: String,
+        lastName: String
     },
     serverity: String,
     updates:[{
@@ -24,8 +29,9 @@ var ticketSchema = new Schema({
             default: Date.now 
         },
         updatedBy: {
-            type: ObjectId,
-            ref: 'User'
+            userId: String,
+            firstName: String,
+            lastName: String
         },
         updateDescription: String
     }],

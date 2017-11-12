@@ -4,9 +4,16 @@ export const LOGIN = 'login';
 export const USER = 'user';
 export const SIGN_UP = 'sign_up';
 export const FETCH_TEAMS = 'fetch_teams';
+export const FETCH_TASKS = 'fetch_tasks';
+export const FETCH_TICKETS = 'fetch_tickets';
+export const FETCH_WIKIS = 'fetch_wikis';
+export const FETCH_WIKI = 'fetch_wiki';
 export const FETCH_TEAM = 'fetch_team';
 export const FETCH_TASK = 'fetch_task';
+export const FETCH_USER = 'fetch_user';
+export const FETCH_TICKET = 'fetch_ticket';
 export const CREATE_NEW_TASK = 'post_new_task';
+export const UPDATE_TICKET = 'update_ticket';
 const ROOT_URL = 'http://localhost:3001';
 
 export function login(user, callback) {
@@ -60,6 +67,36 @@ export function fetchTeams(userID, callback) {
     }
 }
 
+export function fetchTasks(teamID) {
+    // console.log('In actions',userID);
+    // console.log(`GET/ ${ROOT_URL}/${userID}`)
+    const request = axios.get(`${ROOT_URL}/teams/${teamID}/getTasks`);
+    return {
+        type: FETCH_TASKS,
+        payload: request
+    }
+}
+
+export function fetchTickets(teamID) {
+    // console.log('In actions',userID);
+    // console.log(`GET/ ${ROOT_URL}/${userID}`)
+    const request = axios.get(`${ROOT_URL}/teams/${teamID}/getTickets`);
+    return {
+        type: FETCH_TICKETS,
+        payload: request
+    }
+}
+
+export function fetchWikis(teamID) {
+    // console.log('In actions',userID);
+    // console.log(`GET/ ${ROOT_URL}/${userID}`)
+    const request = axios.get(`${ROOT_URL}/teams/${teamID}/getWikis`);
+    return {
+        type: FETCH_WIKIS,
+        payload: request
+    }
+}
+
 export function fetchTeam(teamID) {
     // console.log('In actions',userID);
     // console.log(`GET/ ${ROOT_URL}/${userID}`)
@@ -74,6 +111,42 @@ export function fetchTask(taskID) {
     const request = axios.get(`${ROOT_URL}/tasks/${taskID}`);
     return {
         type: FETCH_TASK,
+        payload: request
+    }
+}
+
+export function fetchTicket(ticketID) {
+    const request = axios.get(`${ROOT_URL}/tickets/${ticketID}`);
+    return {
+        type: FETCH_TICKET,
+        payload: request
+    }
+}
+
+export function closeTicket(ticket) {
+    // console.log(ticket);
+    const request = axios.post(`${ROOT_URL}/tickets/${ticket._id}`, ticket)
+    .then((response) => callback(response))
+    .catch((error) => callback(error));
+
+    return {
+        type: UPDATE_TICKET,
+        payload: request
+    }
+}
+
+export function fetchWiki(wikiID) {
+    const request = axios.get(`${ROOT_URL}/wikis/${wikiID}`);
+    return {
+        type: FETCH_WIKI,
+        payload: request
+    }
+}
+
+export function fetchUser(userID) {
+    const request = axios.get(`${ROOT_URL}/users/${userID}/getUserProfile`);
+    return {
+        type: FETCH_USER,
         payload: request
     }
 }

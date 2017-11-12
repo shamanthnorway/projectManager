@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { fetchTask } from '../../actions';
 import NavigationBar from '../navigation';
+import DeleteItem from '../delete_item';
 
 class Task extends Component {
     componentDidMount() {
@@ -49,12 +50,13 @@ class Task extends Component {
                         <h3>Created By: {task.createdBy.firstName} {task.createdBy.firstName}</h3><br/>
                         <h3>Assigned To: {this.renderUserList()}</h3><br/>
                         <h3>Status: {task.status}</h3>
+                        <DeleteItem item="task" itemID={task._id} historyPath={`/teams/${this.props.match.params.teamID}/tasks`} />
                         <table className="table">
                             <tbody>
                                 {this.renderUpdates()}
                             </tbody>
                         </table>                        
-                        <Link to={`/teams/${this.props.user.team._id}/tasks`} >
+                        <Link to={`/teams/${this.props.match.params.teamID}/tasks`} >
                             <button type="button" className="btn btn-primary">Back</button>
                         </Link>                        
                     </div>

@@ -20,9 +20,9 @@ var userSchema = new Schema({
         required: true
     },
     emailAddress: String,
-    team: [{
-        type: ObjectId,
-        ref: 'Team'
+    teams: [{
+        team: String,
+        teamName: String
     }]
 }, {
     timestamps : true

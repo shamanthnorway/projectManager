@@ -2,14 +2,19 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import NavigationBar from './navigation';
+import { fetchWikis } from '../actions';
 
 class Wikis extends Component {
+    componentDidMount() {
+        const { teamID } = this.props.match.params;
+        this.props.fetchWikis(teamID);  
+    }
     renderWikisList() {
-        return this.props.user.team.wikis.map((wiki)=> {
+        return this.props.user.wikis.map((wiki)=> {
             return (
                 <li key={wiki._id}>
                     <Link to={`/teams/${this.props.user.team._id}/wikis/${wiki._id}`} >
-                        {wiki.name}
+                        {wiki.title}
                     </Link>
                 </li>
             );
@@ -17,7 +22,7 @@ class Wikis extends Component {
     }
     render() {
         if(!this.props.user.user) return <div>Please login</div>;
-        if(!this.props.user.team) return <div>Loading Wiki</div>;
+        if(!this.props.user.wikis) return <div>Loading Wiki</div>;
         else {
             const { team } = this.props.user;
             return (
@@ -29,10 +34,7 @@ class Wikis extends Component {
                         <NavigationBar />
                     </div>
                     <div className="col-sm-10">
-                        <div className="btn-group">
-                            <button type="button" className="btn btn-default">Add Wiki</button>
-                            <button type="button" className="btn btn-default">Delete Wiki</button>
-                        </div> 
+                        <button type="button" className="btn btn-default">Add Wiki</button>
                         <ul className="list-group">
                             {this.renderWikisList()}
                         </ul>                   
@@ -49,4 +51,4 @@ function mapStateToProps(state) {
     return {user: state.user}
 }
 
-export default connect(mapStateToProps, null)(Wikis);
+export default connect(mapStateToProps, { fetchWikis })(Wikis);

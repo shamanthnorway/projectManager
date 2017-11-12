@@ -1,11 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { fetchTickets } from '../actions';
 import NavigationBar from './navigation';
 
 class Tickets extends Component {
+    componentDidMount() {
+        const { teamID } = this.props.match.params;
+        this.props.fetchTickets(teamID);  
+    }
     renderTicketsList() {
-        return this.props.user.team.tickets.map((ticket)=> {
+        return this.props.user.tickets.map((ticket)=> {
             return (
                 <tr key={ticket._id}>
                     <td>
@@ -13,7 +18,7 @@ class Tickets extends Component {
                             {ticket.description}
                         </Link>
                     </td>
-                    <td>{ticket.createBy}</td>
+                    <td>{ticket.createBy.firstName} {ticket.createBy.lastName}</td>
                     <td>{ticket.createdAt}</td>
                     <td>{ticket.status}</td>
                     <td>{ticket.serverity}</td>
@@ -23,13 +28,13 @@ class Tickets extends Component {
     }
     render() {
         if(!this.props.user.user) return <div>Please login</div>;
-        if(!this.props.user.team) return <div>Loading Team</div>;
+        if(!this.props.user.tickets) return <div>Loading Tickets</div>;
         else {
-            const { team } = this.props.user;
+            const { tickets } = this.props.user;
             return (
                 <div  className="container">
                     <div className="jumbotron">
-                        <h1>Tickets: {team.teamName}</h1>
+                        <h1>Tickets: {this.props.user.team.teamName}</h1>
                     </div>
                     <div className="col-sm-2">
                         <NavigationBar />
@@ -37,7 +42,6 @@ class Tickets extends Component {
                     <div className="col-sm-10">
                         <div className="btn-group">
                             <button type="button" className="btn btn-default">Add Ticket</button>
-                            <button type="button" className="btn btn-default">Delete Ticket</button>
                         </div> 
                         <table className="table">
                             <thead>
@@ -62,8 +66,11 @@ class Tickets extends Component {
 
 function mapStateToProps(state) {
     if(!state) return null;
-    // console.log(state);
-    return {user: state.user}
+    console.log(state);
+    return {
+        user: state.user,
+        tickets: state.user.ticket
+    }
 }
 
-export default connect(mapStateToProps, null)(Tickets);
+export default connect(mapStateToProps, { fetchTickets })(Tickets);

@@ -3,15 +3,19 @@ var Schema = mongoose.Schema;
 var ObjectId = Schema.ObjectId;
 
 var taskSchema = new Schema({
+    title: String,
     description: String,
+    teamId: String,
     createdBy: {
-        type: ObjectId,
-        ref: 'User'
+        userId: String,
+        firstName: String,
+        lastName: String
     },
     status: String,
     users:[{
-        type: ObjectId,
-        ref: 'User'
+        userId: String,
+        firstName: String,
+        lastName: String
     }],
     updates:[{
         timestamps: { 
@@ -19,8 +23,9 @@ var taskSchema = new Schema({
             default: Date.now 
         },
         updatedBy: {
-            type: ObjectId,
-            ref: 'User'
+            userId: String,
+            firstName: String,
+            lastName: String
         },
         updateDescription: String
     }]

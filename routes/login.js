@@ -25,7 +25,7 @@ loginRouter.get('/:userID', function(req, res){
     var teams = [];
     Users.findById(mongoose.Types.ObjectId(req.params.userID), function (err, user) {
         if (err) throw err;
-        var ids = user.team;
+        var ids = user.teams;
         var size = ids.length;
         var count = 0;
         ids.forEach(function(id) {
@@ -40,9 +40,6 @@ loginRouter.get('/:userID', function(req, res){
             });
         });
     });
-    function sendResponse() {
-        res.json(teams);
-    }
 });
 
 loginRouter.post('/signup', function(req, res){
@@ -72,7 +69,11 @@ loginRouter.post('/signup', function(req, res){
 });
 
 loginRouter.post('/loginFailed', function(req, res){
-    res.status(302).send('login failed');
+    const response = {
+        status:'failed',
+        message: 'User authentication failed'
+    }
+    res.status(400).json(response);
 });
 
 loginRouter.post(

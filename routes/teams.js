@@ -44,11 +44,16 @@ teamRouter.route('/')
 .post(function (req, res, next) {
     Teams.create(req.body, function (err, team) {
         if (err) {
-            res.writeHead(400,{'Content-Type':'text/plain'});
-            res.end('Duplicate found');
+            const response = {
+                status:'failed',
+                message: 'Error from MongoDB',
+                errorMessage: err,
+                user: ''
+            }
+            res.status(400).json(response);
         }
         else {
-            console.log('Dish created!');
+            // console.log('Dish created!');
             var id = team._id;
             res.writeHead(200,{'Content-Type':'text/plain'});
             res.end('Added the team with id: ' + id);
@@ -60,6 +65,48 @@ teamRouter.route('/')
     Teams.remove({}, function (err, resp) {
         if (err) throw err;
         res.json(resp);
+    });
+});
+
+teamRouter.route('/:teamId/getTasks')
+.get(function(req, res, next){
+    Teams.findById(req.params.teamId, function (err, team) {
+        // console.log(team);
+        if (err) throw err;
+        if(!req.session.teamID) {
+            req.session.teamID = req.params.teamId;
+        }
+        Tasks.find({"_id":{$in: team.tasks}}, function(err, tasksList) {
+            res.json(tasksList);
+        });
+    });
+});
+
+teamRouter.route('/:teamId/getTickets')
+.get(function(req, res, next){
+    Teams.findById(req.params.teamId, function (err, team) {
+        // console.log(team);
+        if (err) throw err;
+        if(!req.session.teamID) {
+            req.session.teamID = req.params.teamId;
+        }
+        Tickets.find({"_id":{$in: team.tickets}}, function(err, ticketsList){
+            res.json(ticketsList);
+        });
+    });
+});
+
+teamRouter.route('/:teamId/getWikis')
+.get(function(req, res, next){
+    Teams.findById(req.params.teamId, function (err, team) {
+        // console.log(team);
+        if (err) throw err;
+        if(!req.session.teamID) {
+            req.session.teamID = req.params.teamId;
+        }
+        Wikis.find({"_id":{$in: team.wikis}}, function(err, wikisList){
+            res.json(wikisList);
+        });
     });
 });
 

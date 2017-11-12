@@ -4,15 +4,18 @@ import { Link } from 'react-router-dom';
 import { fetchTeams } from '../actions';
 
 class Teams extends Component {
-    componentDidMount() {
-        const userID = this.props.user.user._id;
-        this.props.fetchTeams(userID);  
-    }
+    // componentDidMount() {
+    //     const userID = this.props.user.user._id;
+    //     this.props.fetchTeams(userID);  
+    // }
     renderTeamsList(){
-        return this.props.user.teams.map((team)=> {
+        // var { user } = this.props.;
+        // console.log(user, user.user._id);
+        // return <div/>
+        return this.props.user.user.teams.map((team)=> {
             return (
-                <li className="col-sm-4" key={team._id}>
-                    <Link to={`/teams/${team._id}`} >
+                <li className="col-sm-4" key={team.team}>
+                    <Link to={`/teams/${team.team}`} >
                         {team.teamName}
                     </Link>
                 </li>
@@ -21,7 +24,7 @@ class Teams extends Component {
     }
     render() {
         if(!this.props.user.user) return <div>Please login</div>;
-        if(!this.props.user.teams) return <div>Loading Team</div>;
+        // if(!this.props.user.teams) return <div>Loading Team</div>;
         else {
             const { user } = this.props.user;
             const { teams } = this.props.user;
