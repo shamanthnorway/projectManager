@@ -15,3 +15,20 @@ The following have been completed:
  	- view individual ticket
  	- view individual wiki
  	- view individual user 
+
+ ### Starting Node.js
+
+ To start Node, type `npm start`
+
+ ### Starting React.js
+
+ To start Node, type `npm start`
+
+ The web application will be available on (http://localhost:8080)
+
+ For testing purpose, use the following credentials:
+
+ ```
+ username: user
+ password: user
+ ```
