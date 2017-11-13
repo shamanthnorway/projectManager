@@ -13,12 +13,12 @@ class Teams extends Component {
         // console.log(user, user.user._id);
         // return <div/>
         return this.props.user.user.teams.map((team)=> {
-            return (
-                <li className="col-sm-4" key={team.team}>
-                    <Link to={`/teams/${team.team}`} >
+            return (                
+                <Link key={team.team} to={`/teams/${team.team}`} >
+                    <button id="block" className="btn btn-primary col-sm-4">
                         {team.teamName}
-                    </Link>
-                </li>
+                    </button>
+                </Link>
             );
         });
     }

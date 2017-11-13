@@ -44,17 +44,27 @@ ticketRouter.route('/')
     });
 })
 
+ticketRouter.route('/')
 .post(function (req, res, next) {
+    console.log(req.body);
     Tickets.create(req.body, function (err, ticket) {
         if (err) {
+            // throw err;
             res.writeHead(400,{'Content-Type':'text/plain'});
             res.end('Duplicate found');
         }
         else {
-            console.log('Dish created!');
-            var id = ticket._id;
-            res.writeHead(200,{'Content-Type':'text/plain'});
-            res.end('Added the ticket with id: ' + id);
+            console.log('ticket created!');
+            const id = ticket._id;
+            Teams.findByIdAndUpdate(
+                mongoose.Types.ObjectId(req.body.teamId), 
+                {$push: {"tickets":id}}, 
+                {new : true} , 
+                function(err, resp){
+                    res.json(resp);
+                });
+            // res.writeHead(200,{'Content-Type':'text/plain'});
+            // res.end('Added the task with id: ' + id);
         }
     });
 })
@@ -103,7 +113,15 @@ ticketRouter.route('/:ticketId')
 .delete(function(req, res, next){
     Tickets.findByIdAndRemove(req.params.ticketId, function(err, resp){
         if(err) throw err;
-        res.json(resp);
+        Teams.findByIdAndUpdate(
+            mongoose.Types.ObjectId(req.body.teamId),
+            {$pull: {"tickets": req.body._id}},
+            {new: true},
+            function(err, response2) {
+                if(err) throw err;
+                res.json(response2);
+            }
+        );
     });
 });
 module.exports = ticketRouter;

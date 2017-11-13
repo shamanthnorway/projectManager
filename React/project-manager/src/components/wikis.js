@@ -11,12 +11,13 @@ class Wikis extends Component {
     }
     renderWikisList() {
         return this.props.user.wikis.map((wiki)=> {
-            return (
-                <li key={wiki._id}>
-                    <Link to={`/teams/${this.props.user.team._id}/wikis/${wiki._id}`} >
+            return (                
+                <Link  key={wiki._id} to={`/teams/${this.props.user.team._id}/wikis/${wiki._id}`} >
+                    <button id="block" className="btn btn-primary col-sm-3">
                         {wiki.title}
-                    </Link>
-                </li>
+                    </button>
+                </Link>
+                
             );
         });
     }
@@ -34,10 +35,13 @@ class Wikis extends Component {
                         <NavigationBar />
                     </div>
                     <div className="col-sm-10">
-                        <button type="button" className="btn btn-default">Add Wiki</button>
-                        <ul className="list-group">
+                        <Link to={`/teams/${this.props.user.team._id}/wikis/newWiki`} >
+                            <button type="button" className="btn btn-default">Add Wiki</button>
+                        </Link>
+                        <br/>
+                        <ul className="list-group col-sm-10">
                             {this.renderWikisList()}
-                        </ul>                   
+                        </ul>
                     </div>
                 </div>
             );

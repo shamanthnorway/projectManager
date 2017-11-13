@@ -50,9 +50,18 @@ wikiRouter.route('/')
         }
         else {
             // console.log('Wiki created!');
-            var id = wiki._id;
-            res.writeHead(200,{'Content-Type':'text/plain'});
-            res.end('Added the wiki with id: ' + id);
+            // var id = wiki._id;
+            // res.writeHead(200,{'Content-Type':'text/plain'});
+            // res.end('Added the wiki with id: ' + id);
+            console.log('wiki created!');
+            const id = wiki._id;
+            Teams.findByIdAndUpdate(
+                mongoose.Types.ObjectId(req.body.teamId), 
+                {$push: {"wikis":id}}, 
+                {new : true} , 
+                function(err, resp){
+                    res.json(resp);
+                });
         }
     });
 })
@@ -86,9 +95,17 @@ wikiRouter.route('/:wikiId')
     });
 })
 .delete(function (req, res, next) {
-    Wikis.findByIdAndRemove(req.params.wikiId, {new : true}, function (err, wiki) {
+    Wikis.findByIdAndRemove(req.params.wikiId, function (err, wiki) {
         if (err) throw err;
-        res.json(wiki);
+        Teams.findByIdAndUpdate(
+            mongoose.Types.ObjectId(req.body.teamId),
+            {$pull: {"wikis": req.body._id}},
+            {new: true},
+            function(err, response2) {
+                if(err) throw err;
+                res.json(response2);
+            }
+        );
     });
 });
 module.exports = wikiRouter;

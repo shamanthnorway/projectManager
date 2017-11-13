@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { fetchTicket, closeTicket } from '../../actions';
+import { renderUser } from '../../navigation';
 import NavigationBar from '../navigation';
 import DeleteItem from '../delete_item';
 import _ from 'lodash';
@@ -35,16 +36,17 @@ class Ticket extends Component {
         // console.log('Inside renderUserList',this.props);       
         const { tickets } = this.props.user;
         return tickets.users.map((user) => {
-            <div>{user.firstName} {user.firstName}</div>
+            <div>{this.props.renderUser(this.props.user.team._id, user)}</div>
         });
     };
 
     renderUpdates() {
         // console.log('Inside renderUpdates',this.props);
+        // <td>{update.updatedBy.firstName} {update.updatedBy.lastName}</td>
         return _.map(this.props.user.ticket.updates, update => {
             return (
                 <tr key={update._id}>
-                    <td>{update.updatedBy.firstName} {update.updatedBy.lastName}</td>
+                    <td>{this.props.renderUser(this.props.user.team._id, update.updatedBy)}</td>
                     <td>{update.updateDescription}</td>
                     <td>{update.timestamps}</td>
             </tr>
@@ -52,10 +54,12 @@ class Ticket extends Component {
         });
     }
     getResolvedBy() {
+        
+            // {/* <h3>Resolved By: {ticket.resolvedBy.firstName} {ticket.resolvedBy.lastName}<br/></h3>*/}
         const { ticket } = this.props.user;
         if(ticket.resolvedBy) {
             return (
-                <h3>Resolved By: {ticket.resolvedBy.firstName} {ticket.resolvedBy.lastName}<br/></h3>
+                <h3>Resolved By: {this.props.renderUser(this.props.user.team._id, ticket.resolvedBy)}</h3>
             );
         } else {
             return <div></div>;
@@ -65,6 +69,7 @@ class Ticket extends Component {
         if(!this.props.user) return <div>Please login</div>;
         if(!this.props.user.ticket) return <div>Loading Ticket</div>;
         else {
+            /* <h3>Created By: {ticket.createBy.firstName} {ticket.createBy.firstName}</h3> */
             const { ticket } = this.props.user;
             return (
                 <div  className="container">
@@ -72,12 +77,18 @@ class Ticket extends Component {
                         <NavigationBar />
                     </div>
                     <div className="col-sm-10">
-                        <h2>{ticket.description}<span className="badge badge-secondary">{ticket.serverity}</span></h2><br/>
-                        <h3>Created By: {ticket.createBy.firstName} {ticket.createBy.firstName}</h3><br/>
-                        {this.getResolvedBy()}
+                        <h2>{ticket.title}<span className="badge badge-secondary">{ticket.serverity}</span></h2>
                         
+                        <h3>Description: </h3>
+                        <p>{ticket.description}</p>
+                        {this.getResolvedBy()}
+                        <h3>Created By: {this.props.renderUser(this.props.user.team._id, ticket.createBy)}</h3>
                         <h3>Serverity: {ticket.serverity}</h3>
-                        <DeleteItem item="ticket" itemID={ticket._id} historyPath={`/teams/${this.props.match.params.teamID}/tickets`} />
+                        <DeleteItem 
+                            teamID={this.props.match.params.teamID}
+                            item="tickets" 
+                            itemID={ticket._id} 
+                            historyPath={`/teams/${this.props.match.params.teamID}/tickets`} />
                         <table className="table">
                             <tbody>
                                 {this.renderUpdates()}
@@ -98,10 +109,10 @@ class Ticket extends Component {
 
 function mapStateToProps(state) {
     if(!state) return null;
-    console.log('In ticket: ',state);
+    // console.log('In ticket: ',state);
     return {
         user: state.user
     }
 }
 
-export default connect(mapStateToProps, { fetchTicket, closeTicket })(Ticket);
+export default connect(mapStateToProps, { fetchTicket, closeTicket, renderUser })(Ticket);

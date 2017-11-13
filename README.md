@@ -15,6 +15,8 @@ The following have been completed:
  	- view individual ticket
  	- view individual wiki
  	- view individual user 
+	- create new - task, ticket and wiki
+	- delete - task, ticket and wiki
 
  ### Installing Node Modules
 

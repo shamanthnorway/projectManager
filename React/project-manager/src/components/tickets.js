@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { fetchTickets } from '../actions';
 import NavigationBar from './navigation';
+import { renderUser } from '../navigation';
 
 class Tickets extends Component {
     componentDidMount() {
@@ -15,10 +16,10 @@ class Tickets extends Component {
                 <tr key={ticket._id}>
                     <td>
                         <Link to={`/teams/${this.props.user.team._id}/tickets/${ticket._id}`} >
-                            {ticket.description}
+                            {ticket.title}
                         </Link>
                     </td>
-                    <td>{ticket.createBy.firstName} {ticket.createBy.lastName}</td>
+                    <td>{this.props.renderUser(this.props.user.team._id, ticket.createBy)}</td>
                     <td>{ticket.createdAt}</td>
                     <td>{ticket.status}</td>
                     <td>{ticket.serverity}</td>
@@ -41,13 +42,15 @@ class Tickets extends Component {
                     </div>
                     <div className="col-sm-10">
                         <div className="btn-group">
-                            <button type="button" className="btn btn-default">Add Ticket</button>
+                            <Link to={`/teams/${this.props.user.team._id}/tickets/newTicket`} >
+                                <button type="button" className="btn btn-default">Add Ticket</button>
+                            </Link>
                         </div> 
                         <table className="table">
                             <thead>
                                 <tr>
                                     <th>Ticket Description</th>
-                                    <th>Users</th>
+                                    <th>Created By</th>
                                     <th>Created On</th>
                                     <th>Status</th>
                                     <th>Severity</th>
@@ -73,4 +76,4 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps, { fetchTickets })(Tickets);
+export default connect(mapStateToProps, { fetchTickets, renderUser })(Tickets);

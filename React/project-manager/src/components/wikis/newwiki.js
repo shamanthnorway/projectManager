@@ -2,10 +2,9 @@ import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { postTask } from '../../actions';
-import NavigationBar from '../navigation';
+import { postWiki } from '../../actions';
 
-class NewTask extends Component {
+class NewWiki extends Component {
     renderBackPage(e) {
         e.preventDefault;
         this.props.history.goBack();
@@ -26,24 +25,18 @@ class NewTask extends Component {
             </div>
         );
     }
-    onCreateNewTaskSubmit(values) {
+    onCreateNewWikiSubmit(values) {
         var creator = {
             "userId" : this.props.user._id,
             "firstName" : this.props.user.firstName,
             "lastName" : this.props.user.lastName
         };
-        values["updates"] = {
-            "updatedBy":creator,
-            "updateDescription": `Task created at ${new Date()}`
-        };
         values["teamId"] = this.props.team._id;
         values["createdBy"] = creator;
-        values["users"] = [];
-        values["users"].push(creator);
         console.log(values);
-        this.props.postTask(values, (response) => {
+        this.props.postWiki(values, (response) => {
             console.log(response);
-            this.props.history.push(`/teams/${this.props.team._id}/tasks`);
+            this.props.history.push(`/teams/${this.props.team._id}/wikis`);
         })
     }
     render() {
@@ -53,20 +46,16 @@ class NewTask extends Component {
         if(!this.props.team) return <div>Select a team</div>;
         return (
             <div>
-                <form onSubmit={ handleSubmit(this.onCreateNewTaskSubmit.bind(this)) } >
+                <form onSubmit={ handleSubmit(this.onCreateNewWikiSubmit.bind(this)) } >
                     <Field 
                         label="Title"
                         name="title"
                         component={this.renderFieldText} />
                     <Field 
                         label="Description"
-                        name="description"
+                        name="body"
                         component={this.renderFieldText} />
-                    <Field 
-                        label="Status"
-                        name="status"
-                        component={this.renderFieldText} />
-                        <div class="btn-group">
+                    <div class="btn-group">
                         <button className="btn btn-primary" type="submit">Submit</button>
                         <button className="btn btn-primary" type="back" onClick={(e) => {this.renderBackPage(e)}} >Back</button>
                     </div>
@@ -88,5 +77,5 @@ function mapStateToProps(state) {
 export default reduxForm({
     form:'PostsNewForm'
 })(
-    connect(mapStateToProps, { postTask })(NewTask)
+    connect(mapStateToProps, { postWiki })(NewWiki)
 );

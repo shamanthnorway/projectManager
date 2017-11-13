@@ -6,6 +6,10 @@ import NavigationBar from '../navigation';
 import _ from 'lodash';
 
 class User extends Component {
+    renderBackPage(e) {
+        e.preventDefault;
+        this.props.history.goBack();
+    }
     componentDidMount() {
         // console.log('Inside view Task',this.props);
         const userID = this.props.match.params.userID;
@@ -25,9 +29,10 @@ class User extends Component {
                         <p>First Name: {userProfile.firstName}</p>
                         <p>Last Name: {userProfile.lastName}</p>
                         <p>Email Address: {userProfile.emailAddress}</p>
-                        <Link to={`/teams/${this.props.user.team._id}/users`} >
-                            <button type="button" className="btn btn-primary">Back</button>
-                        </Link>
+                        <button 
+                        onClick={(e) => {this.renderBackPage(e)}}
+                        type="button" 
+                        className="btn btn-primary">Back</button>                        
                     </div>
                 </div>
             );

@@ -32,6 +32,14 @@ class Team extends Component {
                             <tbody>
                                 <tr>
                                     <th>
+                                        <Link to={`/teams/${team._id}/tasks`} >
+                                            Tasks
+                                        </Link>
+                                    </th>
+                                    <th>View all the tasks</th>
+                                </tr>
+                                <tr>
+                                    <th>
                                         <Link to={`/teams/${team._id}/tickets`} >
                                             Tickets
                                         </Link>

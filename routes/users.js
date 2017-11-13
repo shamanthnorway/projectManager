@@ -71,13 +71,16 @@ userRouter.route('/:userId/getUserProfile')
 .get(function (req, res, next) {
     Users.findById(mongoose.Types.ObjectId(req.params.userId), function (err, user) {
         if (err) throw err;
+        // console.log(user);
         var finalJSON = JSON.parse(JSON.stringify(user));
-        res.json({
-            '_id':finalJSON._id,
-            'firstName': finalJSON.firstName,
-            'lastName': finalJSON.lastName,
-            'emailAddress': finalJSON.emailAddress
-        });
+        if(user) {
+            res.json({
+                'firstName': finalJSON.firstName,
+                'lastName': finalJSON.lastName,
+                'emailAddress': finalJSON.emailAddress
+            });
+        }
+        else res.json(user);
     });
 });
 

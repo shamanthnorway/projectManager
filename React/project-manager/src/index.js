@@ -13,8 +13,10 @@ import newTask from './components/tasks/newtask';
 import Task from './components/tasks/task';
 import Tickets from './components/tickets';
 import Ticket from './components/tickets/ticket';
+import newTicket from './components/tickets/newticket';
 import Wikis from './components/wikis';
 import Wiki from './components/wikis/wiki';
+import newWiki from './components/wikis/newwiki';
 import Users from './components/users';
 import User from './components/users/user';
 import Team from './components/team';
@@ -30,8 +32,10 @@ ReactDOM.render(
           <Route path="/teams/:teamID/tasks/newTask" component={newTask} />
           <Route path="/teams/:teamID/tasks/:taskID" component={Task} />
           <Route path="/teams/:teamID/tasks" component={Tasks} />
+          <Route path="/teams/:teamID/tickets/newTicket" component={newTicket} />
           <Route path="/teams/:teamID/tickets/:ticketID" component={Ticket} />
           <Route path="/teams/:teamID/tickets" component={Tickets} />
+          <Route path="/teams/:teamID/wikis/newWiki" component={newWiki} />
           <Route path="/teams/:teamID/wikis/:wikiID" component={Wiki} />
           <Route path="/teams/:teamID/wikis" component={Wikis} />
           <Route path="/teams/:teamID/users/:userID" component={User} />

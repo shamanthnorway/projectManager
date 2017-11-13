@@ -9,6 +9,18 @@ class Tasks extends Component {
         const { teamID } = this.props.match.params;
         this.props.fetchTasks(teamID);  
     }
+    getUsersList(users) {
+        return users.map((user) => {
+            // console.log(user.firstName, this.props.user.team._id);
+            return(
+                <div key={user.userId}>
+                    <Link to={`/teams/${this.props.user.team._id}/users/${user.userId}`} >
+                        {user.firstName} {user.lastName}<br/>
+                    </Link>            
+                </div>
+            );
+        });
+    }
     renderTasksList() {
         const month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Spt', 'Oct','Nov', 'Dec'];
         return this.props.user.tasks.map((task)=> {
@@ -20,10 +32,10 @@ class Tasks extends Component {
                 <tr key={task._id}>
                     <td>
                         <Link to={`/teams/${this.props.user.team._id}/tasks/${task._id}`} >
-                            {task.description}
+                            {task.title}
                         </Link>
                     </td>
-                    <td>Users</td>
+                    <td>{this.getUsersList(task.users)}</td>
                     <td>{createdOn}</td>
                     <td>{updatedOn}</td>
                     <td>
@@ -58,7 +70,7 @@ class Tasks extends Component {
                     </div>
                     <div className="col-sm-10">
                         <div className="btn-group">
-                            <Link to={`/teams/${tasks._id}/tasks/newTask`} >
+                            <Link to={`/teams/${this.props.user.team._id}/tasks/newTask`} >
                                 <button type="button" className="btn btn-default">Add Task</button>
                             </Link>
                         </div> 
@@ -85,7 +97,7 @@ class Tasks extends Component {
 
 function mapStateToProps(state) {
     if(!state) return null;
-    console.log(state);
+    // console.log(state);
     return {user: state.user}
 }
 

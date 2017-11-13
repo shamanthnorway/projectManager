@@ -14,43 +14,65 @@ class Task extends Component {
 
     renderUserList() { 
         // console.log('Inside renderUserList',this.props);       
-        const { task } = this.props;
+        const { task } = this.props.user;
         return task.users.map((user) => {
-            <div>{user.firstName} {user.firstName}</div>
-        });
+            <div>{this.renderUser(user)}</div>
+        });        
     };
+
+    renderUser(user) {
+        if(user) {
+            return (
+                <Link to={`/teams/${this.props.user.team._id}/users/${user.userId}`} >
+                    {user.firstName} {user.lastName} 
+                </Link>
+            );
+        } else {
+            return <div />;
+        }
+        
+    }
 
     renderUpdates() {
         // console.log('Inside renderUpdates',this.props);
-        var index = 0;
-        return this.props.task.updates.map((update) => {
-            index++;
-            return (
-                <tr key={index}>
-                    <td>{update.updatedBy.firstName} {update.updatedBy.lastName}</td>
-                    <td>{update.updateDescription}</td>
-                    <td>{update.timestamps}</td>
-                </tr>
-            );
-        });
+        if(this.props.user.task.updates) {
+            return this.props.user.task.updates.map((update) => {
+                return (
+                    <tr key={update._id}>
+                        <td>{this.renderUser(update.updatedBy)}</td>
+                        <td>{update.updateDescription}</td>
+                        <td>{update.timestamps}</td>
+                    </tr>
+                );
+            });
+        } else {
+            return <div />;
+        }
+        
     }
     render() {
         // console.log('Inside view Task',this.props);
         if(!this.props.user) return <div>Please login</div>;
-        if(!this.props.task) return <div>Loading Task</div>;
+        if(!this.props.user.task) return <div>Loading Task</div>;
         else {
-            const { task } = this.props;
+            const { task } = this.props.user;
             return (
                 <div  className="container">
                     <div className="col-sm-2">
                         <NavigationBar />
                     </div>
                     <div className="col-sm-10">
-                        <h2>{task.description}<span className="badge badge-secondary">{task.status}</span></h2><br/>
-                        <h3>Created By: {task.createdBy.firstName} {task.createdBy.firstName}</h3><br/>
-                        <h3>Assigned To: {this.renderUserList()}</h3><br/>
-                        <h3>Status: {task.status}</h3>
-                        <DeleteItem item="task" itemID={task._id} historyPath={`/teams/${this.props.match.params.teamID}/tasks`} />
+                        <h2>{task.title}<span className="badge badge-secondary">{task.status}</span></h2>
+                        <h4>Created By: {task.createdBy.firstName} {task.createdBy.firstName}</h4>
+                        <h4>Assigned To: {this.renderUserList()}</h4>
+                        <h4>Status: {task.status}</h4>
+                        <h4>Description: </h4>
+                        <p>{task.description}</p>
+                        <DeleteItem 
+                            item="tasks" 
+                            teamID={this.props.match.params.teamID}
+                            itemID={task._id} 
+                            historyPath={`/teams/${this.props.match.params.teamID}/tasks`} />
                         <table className="table">
                             <tbody>
                                 {this.renderUpdates()}
@@ -68,10 +90,9 @@ class Task extends Component {
 
 function mapStateToProps(state) {
     if(!state) return null;
-    // console.log(state);
+    console.log('In Task',state);
     return {
-        user: state.user.user,
-        task: state.user.task
+        user: state.user
     }
 }
 

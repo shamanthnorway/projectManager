@@ -13,7 +13,10 @@ export const FETCH_TASK = 'fetch_task';
 export const FETCH_USER = 'fetch_user';
 export const FETCH_TICKET = 'fetch_ticket';
 export const CREATE_NEW_TASK = 'post_new_task';
+export const CREATE_NEW_TICKET = 'post_new_ticket';
+export const CREATE_NEW_WIKI = 'post_new_wiki';
 export const UPDATE_TICKET = 'update_ticket';
+export const DELETE_ITEM = 'delete_item';
 const ROOT_URL = 'http://localhost:3001';
 
 export function login(user, callback) {
@@ -45,6 +48,28 @@ export function postTask(task, callback) {
 
     return {
         type: CREATE_NEW_TASK,
+        payload: request
+    }
+}
+
+export function postTicket(ticket, callback) {
+    const request = axios.post(`${ROOT_URL}/tickets`, ticket)
+    .then((response) => callback(response))
+    .catch((error) => callback(error));
+
+    return {
+        type: CREATE_NEW_TICKET,
+        payload: request
+    }
+}
+
+export function postWiki(wiki, callback) {
+    const request = axios.post(`${ROOT_URL}/wikis`, wiki)
+    .then((response) => callback(response))
+    .catch((error) => callback(error));
+
+    return {
+        type: CREATE_NEW_WIKI,
         payload: request
     }
 }
@@ -147,6 +172,22 @@ export function fetchUser(userID) {
     const request = axios.get(`${ROOT_URL}/users/${userID}/getUserProfile`);
     return {
         type: FETCH_USER,
+        payload: request
+    }
+}
+
+export function deleteItem(item, teamID, itemID, callback) {
+    const data = {
+        data: {
+            "_id" : itemID,
+            "teamId": teamID
+        }
+    }
+    const request = axios.delete(`${ROOT_URL}/${item}/${itemID}`,data)
+    .then((response) => callback(response))
+    .catch((error) => callback(error));
+    return {
+        type: DELETE_ITEM,
         payload: request
     }
 }
